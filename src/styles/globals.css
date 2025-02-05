@@ -1,4 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import url('./typography.css');
+
+.hover-default {
+    @apply transition-transform duration-300 hover:scale-[1.02];
+}
