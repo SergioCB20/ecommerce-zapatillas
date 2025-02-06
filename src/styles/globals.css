@@ -5,3 +5,7 @@
 .hover-default {
     @apply transition-transform duration-300 hover:scale-[1.02];
 }
+
+.primary-button {
+    @apply  bg-primary text-white rounded-xl shadow-button hover:bg-primaryHover hover-default;
+}

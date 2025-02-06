@@ -5,7 +5,7 @@ import ProductCard from "@/components/ProductCard";
 
 export default function Home() {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full bg-background">
       {/* Banner */}
       <section className="p-6 flex justify-center">
         <div className="bg-white shadow-card rounded-xl p-6 max-w-4xl text-center w-full hover:cursor-pointer">
@@ -20,7 +20,7 @@ export default function Home() {
           <p className="text-textMuted">
             El Nike Air Max combina estilo retro con tecnología moderna.
           </p>
-          <button className="mt-4 bg-primary text-white px-4 py-2 rounded-xl shadow-button transition hover:bg-primaryHover hover-default">
+          <button className="primary-button mt-4 px-4 py-2">
             Comprar
           </button>
         </div>

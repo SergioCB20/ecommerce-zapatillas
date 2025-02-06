@@ -15,6 +15,7 @@ export default function Navbar() {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/products?query=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery("");
     }
   };
 
@@ -42,7 +43,9 @@ export default function Navbar() {
             <MagnifyingGlassIcon className="w-5 h-5 text-textMuted" />
           </button>
         </form>
+        <Link href={"/cart"}>
         <ShoppingCartIcon className="w-5 h-5 hover:cursor-pointer hover:text-gray-300 hover-default"/>
+        </Link>
         {/* Dropdown para Registro e Inicio de Sesión */}
         <Dropdown
           icon={<UserIcon className="w-5 h-5 text-white ms-2 hover:text-gray-300 hover-default" />}

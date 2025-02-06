@@ -13,6 +13,7 @@ export default {
         primaryHover: "#2D38C5", // Azul más oscuro para hover
         primaryLight: "#5964F2", // Azul más claro para efectos sutiles
         background: "#FFFFFF", // Fondo principal blanco
+        layout:"#faefec",
         secondary: "#F8F8F8", // Gris claro para secciones
         text: "#222222", // Negro para texto principal
         textMuted: "#555555", // Gris para textos secundarios
