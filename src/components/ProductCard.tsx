@@ -1,6 +1,6 @@
 
 import Image from "next/image";
-import { Product } from "@/types/Product";
+import { Product } from "@/types/types";
 
 interface ProductCardProps {
   product: Product;
@@ -8,7 +8,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const finalPrice = product.hasDiscount
-    ? (product.price * (1 - (product.discountPercentage || 0) / 100)).toFixed(2)
+    ? (product.price * (1 - (product.discountPorcentage || 0) / 100)).toFixed(2)
     : product.price.toFixed(2);
 
   return (
@@ -35,7 +35,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <p className="text-xl font-bold text-primary">${finalPrice}</p>
           {product.hasDiscount && (
             <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-              {product.discountPercentage}% OFF
+              {product.discountPorcentage}% OFF
             </span>
           )}
         </div>

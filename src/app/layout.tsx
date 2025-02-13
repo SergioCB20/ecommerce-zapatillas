@@ -1,4 +1,3 @@
-
 import "../styles/globals.css";
 import type { Metadata } from "next";
 import "../styles/globals.css"
@@ -28,7 +27,9 @@ export default function RootLayout({
         className={`${roboto.className} antialiased`}
       >
         <Navbar/>
+        <div className="w-full h-full pt-16">
         {children}
+        </div>
         <Footer/>
       </body>
     </html>
