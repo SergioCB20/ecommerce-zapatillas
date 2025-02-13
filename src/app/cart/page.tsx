@@ -1,4 +1,3 @@
-
 "use client";
 import { CartItem } from "@/types/types";
 import { useState, useEffect } from "react";
@@ -21,9 +20,9 @@ export default function CartPage() {
     let totalOriginalPrice = 0;
     cart.forEach((item:any) => {
       total += item.price * item.quantity;
+      const originalPrice = item.price / (1 - item.discountPorcentage / 100);
+      totalOriginalPrice += originalPrice*item.quantity;
       if (item.hasDiscount) {
-        const originalPrice = item.price / (1 - item.discountPorcentage / 100);
-        totalOriginalPrice += originalPrice;
         discount += (originalPrice - item.price) * item.quantity;
       }
     });
