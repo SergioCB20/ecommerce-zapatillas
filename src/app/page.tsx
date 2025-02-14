@@ -1,31 +1,30 @@
 import { sneakers } from "@/data/data";
 import Image from "next/image";
-import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="w-full h-full bg-background">
-      {/* Banner */}
-      <section className="p-6 flex justify-center">
-        <div className="bg-white shadow-card rounded-xl p-6 max-w-4xl text-center w-full hover:cursor-pointer">
+      <div className="w-full h-screen relative">
+        <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-            alt="Nike Air Max"
-            width={256}
-            height={200}
-            className="mx-auto object-cover rounded-lg"
+            src="https://cdn.pixabay.com/photo/2022/05/08/08/58/feet-7181596_1280.jpg"
+            alt="HeroImage"
+            layout="fill"
+            objectFit="cover"
+            className="w-full h-full brightness-50"
           />
-          <h2 className="text-3xl font-bold text-text mt-4">Air Max Plus</h2>
-          <p className="text-textMuted">
-            El Nike Air Max combina estilo retro con tecnología moderna.
-          </p>
-          <button className="primary-button mt-4 px-4 py-2">
-            Comprar
-          </button>
         </div>
-      </section>
 
+        <div className="absolute inset-0 flex justify-center items-center z-10 text-white">
+          <div className="relative max-w-[80%] flex flex-col items-center gap-5 bg-black bg-opacity-50 p-8 rounded-lg magical-bg">
+            <h1 className="text-6xl font-bold text-center">Calidad que se ajusta a ti</h1>
+            <p className="text-center">¡Explora nuestro catálogo de zapatillas!</p>
+            <Link href={`/products`} className="primary-button max-w-[50%] px-5 py-2">Explora Ahora</Link>
+          </div>
+        </div>
+      </div>
       {/* Categorías */}
       <section className="p-6">
         <h3 className="text-xl font-semibold text-text mb-4">Categorías</h3>

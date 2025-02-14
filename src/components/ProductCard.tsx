@@ -1,6 +1,6 @@
-
 import Image from "next/image";
 import { Product } from "@/types/types";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: Product;
@@ -31,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </h3>
 
         {/* Precio y descuento */}
-        <div className="mt-2 flex items-center justify-between">
+        <div className="mt-2 mb-4 flex items-center justify-between">
           <p className="text-xl font-bold text-primary">${finalPrice}</p>
           {product.hasDiscount && (
             <span className="bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
@@ -41,9 +41,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Botón de agregar al carrito */}
-        <button className="mt-4 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">
-          Agregar al carrito
-        </button>
+        <Link href={`/products/${product.id}`} className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+          Comprar
+        </Link>
       </div>
     </div>
   );

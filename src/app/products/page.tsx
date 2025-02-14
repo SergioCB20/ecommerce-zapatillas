@@ -3,6 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { FunnelIcon } from "@heroicons/react/24/solid";
 import { sneakers } from "@/data/data";
 import { useState } from "react";
+import { useMemo } from "react";
 import ProductCard from "@/components/ProductCard";
 
 export default function ProductsPage() {
@@ -16,40 +17,50 @@ export default function ProductsPage() {
   const query = searchParams.get("query");
 
   // Filtrar los productos que contienen el contenido de la query
-  const filteredSneakers = sneakers
-    .filter((sneaker) => {
-      const matchesQuery = sneaker.name.toLowerCase().includes(query?.toLowerCase() || "");
-      const matchesCategory = category ? sneaker.category === category : true;
-      const matchesBrand = brand ? sneaker.brand === brand : true;
-      const matchesPrice = sneaker.price >= priceRange[0] && sneaker.price <= priceRange[1];
-      const matchesDiscount = hasDiscount ? sneaker.hasDiscount : true;
-      return matchesQuery && matchesCategory && matchesBrand && matchesPrice && matchesDiscount;
-    })
-    .sort((a, b) => {
-      if (sortOption === "name-asc") {
-        return a.name.localeCompare(b.name);
-      } else if (sortOption === "name-desc") {
-        return b.name.localeCompare(a.name);
-      } else if (sortOption === "price-asc") {
-        return a.price - b.price;
-      } else if (sortOption === "price-desc") {
-        return b.price - a.price;
-      } else if (sortOption === "discount-asc") {
-        return (a.discountPorcentage ?? 0) - (b.discountPorcentage ?? 0);
-      } else if (sortOption === "discount-desc") {
-        return (b.discountPorcentage ?? 0) - (a.discountPorcentage ?? 0);
-      }
-      return 0;
-    });
+  const filteredSneakers = useMemo(() => {
+    return sneakers
+      .filter((sneaker) => {
+        const matchesQuery = sneaker.name.toLowerCase().includes(query?.toLowerCase() || "");
+        const matchesCategory = category ? sneaker.category === category : true;
+        const matchesBrand = brand ? sneaker.brand === brand : true;
+        const matchesPrice = sneaker.price >= priceRange[0] && sneaker.price <= priceRange[1];
+        const matchesDiscount = hasDiscount ? sneaker.hasDiscount : true;
+        return matchesQuery && matchesCategory && matchesBrand && matchesPrice && matchesDiscount;
+      })
+      .sort((a, b) => {
+        if (sortOption === "name-asc") {
+          return a.name.localeCompare(b.name);
+        } else if (sortOption === "name-desc") {
+          return b.name.localeCompare(a.name);
+        } else if (sortOption === "price-asc") {
+          return a.price - b.price;
+        } else if (sortOption === "price-desc") {
+          return b.price - a.price;
+        } else if (sortOption === "discount-asc") {
+          return (a.discountPorcentage ?? 0) - (b.discountPorcentage ?? 0);
+        } else if (sortOption === "discount-desc") {
+          return (b.discountPorcentage ?? 0) - (a.discountPorcentage ?? 0);
+        }
+        return 0;
+      });
+  }, [query, category, brand, priceRange, hasDiscount, sortOption]);
 
   return (
     <div className="w-full min-h-screen bg-background px-2 py-5 mt-10 md:mt-7">
       <div className="w-full h-12 flex justify-between items-center">
         <div className="w-fit ms-5 mt-5">
-          <h1 className="font-normal text-xl">Resultado de:</h1>
-          <span className="font-bold text-4xl italic">
-            "{query?.toUpperCase()}"
-          </span>
+          {query?(
+            <div>
+              <h1 className="font-normal text-xl">Resultado de:</h1>
+            <span className="font-bold text-4xl italic">
+              "{query.toUpperCase()}"
+            </span>
+            </div>
+          ) :(
+            <div>
+              <h1 className="font-bold text-4xl italic">¡Explora nuestros productos!</h1>
+            </div>
+          )}
         </div>
         <div
           className="flex items-center gap-4 px-3 py-1 border border-black cursor-pointer"

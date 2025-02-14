@@ -3,7 +3,9 @@ import React, { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid"; // Ícono de lupa de Heroicons
 import Dropdown from "./Dropdown"; // Importamos el componente Dropdown
 import { useRouter } from "next/navigation";
-import { UserIcon,ShoppingCartIcon } from '@heroicons/react/24/solid';
+import { UserCircleIcon,ShoppingCartIcon } from '@heroicons/react/24/solid';
+import Logo from "../../public/Sneakers-Logo.png"
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Navbar() {
@@ -23,7 +25,7 @@ export default function Navbar() {
     <nav className="fixed top-0 z-20 w-full bg-primary text-white p-4 flex justify-between items-center md:flex-row flex-col text-center">
       {/* Logo */}
       <Link href={"/"}>
-        <h1 className="text-2xl font-bold">DEINSA SNEAKERS</h1>
+        <Image src={Logo} alt="Logo" width={100} height={200}/>
       </Link>
       {/* Enlaces y Buscador */}
       <div className="space-x-4 mt-2 md:mt-0 flex flex-wrap justify-center items-center">
@@ -37,7 +39,7 @@ export default function Navbar() {
             placeholder="Buscar..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)} // Actualizar el estado con el valor del input
-            className="bg-transparent border-b border-borderColor focus:outline-none text-textMuted placeholder-textMuted px-2 py-1 transition duration-300"
+            className="bg-transparent border-b border-borderColor focus:outline-none text-textMuted placeholder-textMuted ps-2 pe-10 py-1 transition duration-300"
           />
           <button type="submit" className="absolute right-4">
             <MagnifyingGlassIcon className="w-5 h-5 text-textMuted" />
@@ -48,7 +50,7 @@ export default function Navbar() {
         </Link>
         {/* Dropdown para Registro e Inicio de Sesión */}
         <Dropdown
-          icon={<UserIcon className="w-5 h-5 text-white ms-2 hover:text-gray-300 hover-default" />}
+          icon={<UserCircleIcon className="w-5 h-5 text-white ms-2 hover:text-gray-300 hover-default" />}
           label="sergio"
           options={[
             { label: "Regístrate", href: "/auth/register" },

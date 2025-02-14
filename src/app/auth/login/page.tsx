@@ -7,6 +7,8 @@ import { auth } from "@/lib/firebase";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import Logo from "../../../../public/Sneakers-Logo.png"
+import Image from "next/image";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -46,12 +48,8 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        />
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm flex-col items-center">
+        <Image src={Logo} alt="Logo" width={200} height={300} className="mx-auto pe-5"/>
         <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
           Sign in to your account
         </h2>

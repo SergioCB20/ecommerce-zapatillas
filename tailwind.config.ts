@@ -5,16 +5,21 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/styles/**/*.css"
   ],
   theme: {
     extend: {
       colors: {
-        primary: "#3F49E1", // Azul principal
-        primaryHover: "#2D38C5", // Azul más oscuro para hover
-        primaryLight: "#5964F2", // Azul más claro para efectos sutiles
+        // Colores primarios basados en el logo
+        primary: "#1f2937", // Negro principal
+        primaryHover: "#333333", // Negro más oscuro para hover
+        primaryLight: "#666666", // Negro más claro para efectos sutiles
+        secondary: "#eb9314", // Rojo para elementos secundarios
+        secondaryHover: "#CC3315", // Rojo más oscuro para hover
+
+        // Otros colores
         background: "#FFFFFF", // Fondo principal blanco
-        layout:"#faefec",
-        secondary: "#F8F8F8", // Gris claro para secciones
+        layout: "#faefec", // Color de fondo para layout
         text: "#222222", // Negro para texto principal
         textMuted: "#555555", // Gris para textos secundarios
         accent: "#E5C99F", // Beige para fondo exterior

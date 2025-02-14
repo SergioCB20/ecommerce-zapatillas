@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
       "www.blogdelfotografo.com",
       "previews.123rf.com",
       "s3.sa-east-1.amazonaws.com",
+      "cdn.pixabay.com"
     ],
   },
 };

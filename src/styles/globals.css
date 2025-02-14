@@ -1,11 +1,19 @@
+@import "./animations.css";
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+
 .hover-default {
-    @apply transition-transform duration-300 hover:scale-[1.02];
+  @apply transition-transform duration-300 hover:scale-[1.02];
 }
 
 .primary-button {
-    @apply  bg-primary text-white rounded-xl shadow-button hover:bg-primaryHover hover-default;
+  @apply bg-primary text-white border rounded-xl shadow-button hover:bg-primaryHover hover:border-yellow-500 hover-default;
+}
+
+.magical-bg::before {
+    content: "";
+    @apply absolute top-0 right-0 -z-10 w-full h-full bg-[linear-gradient(45deg,_#A40000,_#FFFFFF,_#CCCCCC,_#003366,_#808000)] bg-[size:80%] rounded-lg blur-md;
+    animation: glowing 20s linear infinite;
 }
