@@ -22,7 +22,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 z-20 w-full bg-primary text-white p-4 flex justify-between items-center md:flex-row flex-col text-center">
+    <nav className="fixed top-0 z-50 w-full bg-primary text-white p-4 flex justify-between items-center md:flex-row flex-col text-center">
       {/* Logo */}
       <Link href={"/"}>
         <Image src={Logo} alt="Logo" width={100} height={200}/>

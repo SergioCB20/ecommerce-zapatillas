@@ -33,7 +33,7 @@ export default function Home() {
             (cat) => (
               <div
                 key={cat}
-                className="bg-secondary p-4 rounded-xl text-center text-text hover:cursor-pointer hover-default"
+                className="bg-blue-500 hover:bg-blue-600 p-4 rounded-xl text-center text-white hover:cursor-pointer hover-default"
               >
                 {cat}
               </div>
@@ -45,7 +45,7 @@ export default function Home() {
       {/* Productos Destacados */}
       <section className="p-6">
         <h3 className="text-xl font-semibold text-text mb-4">Destacados</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {sneakers.map((product) => (
             <ProductCard product={product} key={product.id} />
           ))}
