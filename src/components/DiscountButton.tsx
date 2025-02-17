@@ -32,7 +32,7 @@ const DiscountModal = ({ isOpen, onClose, onApply,discountPercentage }: Discount
   if (!isOpen) return null;
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center z-40 bg-black bg-opacity-50">
+    <div className="absolute inset-0 flex items-center justify-center z-30 bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">Modificar Descuento</h2>
         <input

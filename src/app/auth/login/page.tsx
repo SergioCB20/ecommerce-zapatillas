@@ -1,130 +1,176 @@
-"use client"; // Asegura que useRouter y useEffect funcionen
-
-import { useState, useEffect } from "react";
+"use client";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signInWithEmailAndPassword, onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "@/lib/firebase";
 import Link from "next/link";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import Logo from "../../../../public/Sneakers-Logo.png"
-import Image from "next/image";
+import { useUser } from "@/context/UserContext"; // Importa el hook useUser
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [user, setUser] = useState<User | null>(null); // ✅ Se especifica el tipo User | null
-  const [loading, setLoading] = useState(true); // Nuevo estado para manejar la carga
+
   const router = useRouter();
-
-  useEffect(() => {
-    // Detectar si hay un usuario autenticado
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("Usuario autenticado:", user); // ✅ Debugging
-      setUser(user);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
+  const { user, login, loading } = useUser(); // Usa el hook useUser
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(""); // Limpiar error anterior
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("Usuario después del login:", auth.currentUser); // ✅ Debugging
+      await login(email, password); // Usa la función login del contexto
+      console.log("Usuario después del login:", user);
       router.push("/dashboard"); // Redirigir después del login exitoso
     } catch (err: any) {
-      setError("Error al iniciar sesión. Verifica tus credenciales.");
+      setError(err.message || "Error al iniciar sesión.");
     }
   };
 
   if (loading) {
-    return <p className="text-center text-gray-500">Cargando...</p>;
+    return (
+      <p
+        style={{
+          textAlign: "center",
+          marginTop: "50px",
+          color: "#6b7280",
+          fontSize: "18px",
+        }}
+      >
+        Cargando...
+      </p>
+    );
   }
 
   return (
-    <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm flex-col items-center">
-        <Image src={Logo} alt="Logo" width={200} height={300} className="mx-auto pe-5"/>
-        <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
-          Sign in to your account
-        </h2>
-      </div>
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" onSubmit={handleLogin}>
-          <div>
-            <Label htmlFor="email">Email address</Label>
-            <Input
-              id="email"
-              name="email"
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundColor: "#f5f5f5",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#fff",
+          padding: "30px",
+          borderRadius: "10px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          width: "100%",
+          maxWidth: "400px",
+        }}
+      >
+        {/* Título */}
+        <h1
+          style={{
+            textAlign: "center",
+            marginBottom: "20px",
+            color: "#333",
+            fontSize: "24px",
+          }}
+        >
+          Iniciar sesión
+        </h1>
+        {/* Formulario */}
+        <form onSubmit={handleLogin}>
+          {/* Campo de correo electrónico */}
+          <div style={{ marginBottom: "15px" }}>
+            <input
               type="email"
-              required
-              placeholder="correo@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="Correo electrónico"
+              required
+              style={{
+                width: "100%",
+                padding: "12px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                boxSizing: "border-box",
+              }}
             />
           </div>
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
+          {/* Campo de contraseña */}
+          <div style={{ marginBottom: "20px" }}>
+            <input
               type="password"
-              autoComplete="current-password"
-              required
-              placeholder="*********"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Contraseña"
+              required
+              style={{
+                width: "100%",
+                padding: "12px",
+                fontSize: "16px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                boxSizing: "border-box",
+              }}
             />
           </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          <div>
-            <button
-              type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Sign in
-            </button>
-          </div>
+          {/* Botón de inicio de sesión */}
+          <button
+            type="submit"
+            style={{
+              width: "100%",
+              padding: "12px",
+              fontSize: "16px",
+              backgroundColor: "#007bff",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              transition: "background-color 0.3s ease",
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#0056b3")}
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#007bff")}
+          >
+            Iniciar sesión
+          </button>
         </form>
-
-        {/* Enlace para recuperar contraseña */}
-        <p className="mt-4 text-center">
-          <Link href="/auth/password" className="text-indigo-600 hover:text-indigo-500">
-            Forgot your password?
-          </Link>
-        </p>
-
-        {/* Enlace para registrarse */}
-        <p className="mt-4 text-center">
-          Don't have an account?{" "}
-          <Link href="/auth/register" className="text-indigo-600 hover:text-indigo-500">
-            Register here
-          </Link>
-        </p>
-
-        {/* ✅ Solo mostrar los enlaces si el usuario está autenticado */}
-        {user && (
-          <>
-            <p className="mt-4 text-center">
-              <Link href="/products" className="text-indigo-600 hover:text-indigo-500">
-                Ver Productos
-              </Link>
-            </p>
-            <p className="mt-4 text-center">
-              <Link href="/cart" className="text-indigo-600 hover:text-indigo-500">
-                Ir al Carrito
-              </Link>
-            </p>
-          </>
+        {/* Mensajes de error */}
+        {error && (
+          <p
+            style={{
+              marginTop: "15px",
+              color: "red",
+              fontSize: "14px",
+              textAlign: "center",
+            }}
+          >
+            {error}
+          </p>
         )}
+        {/* Enlaces adicionales */}
+        <div style={{ marginTop: "20px", textAlign: "center" }}>
+          <Link
+            href="/auth/password"
+            style={{
+              color: "#007bff",
+              textDecoration: "none",
+              fontSize: "14px",
+            }}
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </div>
+        <div style={{ marginTop: "10px", textAlign: "center" }}>
+          <p style={{ fontSize: "14px", color: "#6b7280" }}>
+            ¿No tienes una cuenta?{" "}
+            <Link
+              href="/auth/register"
+              style={{
+                color: "#007bff",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
+            >
+              Regístrate aquí
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
 }
-
-

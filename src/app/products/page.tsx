@@ -46,7 +46,7 @@ export default function ProductsPage() {
   }, [query, category, brand, priceRange, hasDiscount, sortOption]);
 
   return (
-    <div className="w-full min-h-screen bg-background px-2 py-5 mt-10 md:mt-7">
+    <div className="w-full min-h-screen bg-background px-2 py-5 mt-14 md:mt-7">
       <div className="w-full h-12 flex justify-between items-center">
         <div className="w-fit ms-5 mt-5">
           {query?(
@@ -66,7 +66,7 @@ export default function ProductsPage() {
           className="flex items-center gap-4 px-3 py-1 border border-black cursor-pointer"
           onClick={() => setOpenFilterSideBar(true)}
         >
-          <p className="font-bold">FILTRAR Y ORDENAR</p>
+          <p className="font-bold hidden md:block">FILTRAR Y ORDENAR</p>
           <FunnelIcon className="h-8 w-8 text-gray-700" />
         </div>
       </div>
@@ -86,7 +86,7 @@ export default function ProductsPage() {
         }`}
       >
         <div
-          className={`bg-white h-full p-4 transition-all duration-300 overflow-hidden ${
+          className={`bg-white h-full pt-36 md:pt-24 p-4 transition-all duration-300 overflow-hidden ${
             openFilterSideBar ? "w-full md:w-96 opacity-100" : "w-0 opacity-0"
           }`}
         >

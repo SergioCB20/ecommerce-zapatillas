@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore"; // ✅ Importar Firestore
 
 const firebaseConfig = {
@@ -11,14 +11,10 @@ const firebaseConfig = {
   appId: "1:714037179397:web:caa5132a87f0d2be8b986c"
 };
 
-// ✅ Inicializar Firebase
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app); // ✅ Inicializar Firestore
+const db = getFirestore(app);
 
-export { app, auth, db }; // ✅ Exportar `db` correctamente
+export { app, auth, db };
 
-// Función de login
-export const login = async (user: { email: string; password: string }) => {
-  return await signInWithEmailAndPassword(auth, user.email, user.password);
-};

@@ -11,7 +11,8 @@ export default function Home() {
           <Image
             src="https://cdn.pixabay.com/photo/2022/05/08/08/58/feet-7181596_1280.jpg"
             alt="HeroImage"
-            layout="fill"
+            width={1920}
+            height={1080}
             objectFit="cover"
             className="w-full h-full brightness-50"
           />

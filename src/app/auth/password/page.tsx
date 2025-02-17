@@ -19,7 +19,9 @@ export default function PasswordResetPage() {
 
     try {
       await sendPasswordResetEmail(auth, email);
-      setMessage("Se ha enviado un enlace a tu correo para restablecer la contraseña.");
+      setMessage(
+        "Se ha enviado un enlace a tu correo para restablecer la contraseña."
+      );
     } catch (err: any) {
       setError("Error al enviar el correo. Verifica la dirección.");
     }
@@ -57,12 +59,18 @@ export default function PasswordResetPage() {
           </div>
         </form>
         <p className="mt-4 text-center">
-          <Link href="/auth/login" className="text-indigo-600 hover:text-indigo-500">
+          <Link
+            href="/auth/login"
+            className="text-indigo-600 hover:text-indigo-500"
+          >
             Volver al inicio de sesión
           </Link>
         </p>
         <p className="mt-4 text-center">
-          <Link href="/password" className="text-indigo-600 hover:text-indigo-500">
+          <Link
+            href="/password"
+            className="text-indigo-600 hover:text-indigo-500"
+          >
             ¿Olvidaste tu contraseña?
           </Link>
         </p>
