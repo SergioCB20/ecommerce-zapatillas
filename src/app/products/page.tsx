@@ -1,12 +1,24 @@
 "use client";
+import React, { useEffect, useState } from "react";
+import { getAllProducts } from "@/lib/productsService";
+import { Product } from "@/types/types";
 import { useSearchParams } from "next/navigation";
 import { FunnelIcon } from "@heroicons/react/24/solid";
-import { sneakers } from "@/data/data";
-import { useState } from "react";
 import { useMemo } from "react";
 import ProductCard from "@/components/ProductCard";
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+        const fetchProducts = async () => {
+          const fetchedProducts = await getAllProducts();
+          console.log(fetchedProducts);
+          setProducts(fetchedProducts);
+        };
+        fetchProducts();
+      }, []);
+
   const searchParams = useSearchParams();
   const [openFilterSideBar, setOpenFilterSideBar] = useState(false);
   const [category, setCategory] = useState("");
@@ -16,9 +28,8 @@ export default function ProductsPage() {
   const [sortOption, setSortOption] = useState("");
   const query = searchParams.get("query");
 
-  // Filtrar los productos que contienen el contenido de la query
   const filteredSneakers = useMemo(() => {
-    return sneakers
+    return products
       .filter((sneaker) => {
         const matchesQuery = sneaker.name.toLowerCase().includes(query?.toLowerCase() || "");
         const matchesCategory = category ? sneaker.category === category : true;

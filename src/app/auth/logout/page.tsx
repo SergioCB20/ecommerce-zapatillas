@@ -1,11 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/context/UserContext";
-import { useEffect } from "react";
+import { logout } from "@/lib/authService";
+import { useEffect
+ } from "react";
 
 export default function LogoutPage() {
   const router = useRouter();
-  const { logout } = useUser();
 
   useEffect(() => {
     // Llama a la función logout del contexto

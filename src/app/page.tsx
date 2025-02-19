@@ -1,9 +1,21 @@
-import { sneakers } from "@/data/data";
+"use client"
+import React, { useEffect, useState } from "react";
+import { getAllProducts } from "@/lib/productsService";
+import { Product } from "@/types/types";
 import Image from "next/image";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 
 export default function Home() {
+    const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+      const fetchProducts = async () => {
+        const fetchedProducts = await getAllProducts();
+        console.log(fetchedProducts);
+        setProducts(fetchedProducts);
+      };
+      fetchProducts();
+    }, []);
   return (
     <div className="w-full h-full bg-background">
       <div className="w-full h-screen relative">
@@ -47,7 +59,7 @@ export default function Home() {
       <section className="p-6">
         <h3 className="text-xl font-semibold text-text mb-4">Destacados</h3>
         <div className="grid place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {sneakers.map((product) => (
+          {products.map((product) => (
             <ProductCard product={product} key={product.id} />
           ))}
         </div>

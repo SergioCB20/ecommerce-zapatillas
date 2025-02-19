@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { loginUser } from "@/lib/authService";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext"; // Importa el hook useUser
 
@@ -10,14 +11,14 @@ export default function LoginPage() {
   const [error, setError] = useState("");
 
   const router = useRouter();
-  const { user, login, loading } = useUser(); // Usa el hook useUser
+  const { user, loading } = useUser(); // Usa el hook useUser
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(""); // Limpiar error anterior
 
     try {
-      await login(email, password); // Usa la función login del contexto
+      await loginUser(email, password); // Usa la función login del contexto
       console.log("Usuario después del login:", user);
       router.push("/dashboard"); // Redirigir después del login exitoso
     } catch (err: any) {
