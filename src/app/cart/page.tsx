@@ -1,6 +1,7 @@
 "use client";
 import { CartItem } from "@/types/types";
 import { useState, useEffect } from "react";
+import { updateProduct } from "@/lib/productsService"; // Importar la función para actualizar productos
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -20,25 +21,21 @@ export default function CartPage() {
     let totalOriginalPrice = 0;
 
     cart.forEach((item) => {
-      // Calcular el precio original antes del descuento
       const originalItemPrice =
         item.hasDiscount && (item.discountPorcentage ?? 0) > 0
           ? item.price / (1 - (item.discountPorcentage ?? 0) / 100)
           : item.price;
 
-      // Calcular el descuento aplicado
       const itemDiscount =
         item.hasDiscount && (item.discountPorcentage ?? 0) > 0
           ? (originalItemPrice - item.price) * item.quantity
           : 0;
 
-      // Acumular los valores
-      total += item.price * item.quantity; // Precio total actual
-      discount += itemDiscount; // Descuento total acumulado
-      totalOriginalPrice += originalItemPrice * item.quantity; // Precio original total acumulado
+      total += item.price * item.quantity;
+      discount += itemDiscount;
+      totalOriginalPrice += originalItemPrice * item.quantity;
     });
 
-    // Actualizar los estados con los valores calculados
     setTotalPrice(total);
     setTotalDiscount(discount);
     setOriginalPrice(totalOriginalPrice);
@@ -60,11 +57,24 @@ export default function CartPage() {
     calculateTotals(updatedCart);
   };
 
-  const handleCheckout = () => {
-    // Lógica para manejar el checkout
-    alert("¡Compra realizada con éxito!");
-    setCart([]);
-    localStorage.removeItem("cart");
+  const handleCheckout = async () => {
+    try {
+      await Promise.all(
+        cart.map(async (product) => {
+          const newStock = product.stock - product.quantity;
+          if (newStock >= 0) {
+            await updateProduct(product.id, { stock: newStock });
+          }
+        })
+      );
+
+      alert("¡Compra realizada con éxito!");
+      setCart([]);
+      localStorage.removeItem("cart");
+    } catch (error) {
+      console.error("Error al actualizar el stock:", error);
+      alert("Hubo un error al procesar la compra.");
+    }
   };
 
   return (
