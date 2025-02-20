@@ -4,7 +4,6 @@ import {
   getDoc,
   getDocs,
   doc,
-  setDoc,
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
@@ -17,7 +16,7 @@ export const createProduct = async (product: Product) => {
     const productsCollection = collection(db, "products");
 
     // Eliminar explícitamente la propiedad "id" antes de enviarlo a Firestore
-    const { id, ...productWithoutId } = product;
+    const { id: _, ...productWithoutId } = product;
 
     // Firestore generará un ID automáticamente
     const docRef = await addDoc(productsCollection, productWithoutId);
