@@ -81,7 +81,9 @@ export default function CartPage() {
     <div className="w-full bg-background p-5 mt-10 md:mt-7">
       <h1 className="font-bold italic text-4xl mb-5">Tu carrito de Compras</h1>
       {cart.length === 0 ? (
-        <p>Tu carrito está vacío.</p>
+        <div className="w-full min-h-screen flex justify-center items-center">
+          <h1 className="text-4xl font-bold italic text-gray-600">Tu carrito está vacio</h1>
+        </div>
       ) : (
         <div>
           {cart.map((product) => (

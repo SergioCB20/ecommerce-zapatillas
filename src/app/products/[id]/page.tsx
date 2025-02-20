@@ -5,6 +5,8 @@ import { Product, CartItem } from "@/types/types";
 import { useParams } from "next/navigation";
 import { useState, useEffect, ReactNode } from "react";
 import { DiscountButton } from "@/components/DiscountButton";
+import ProductDetail from "@/components/ProductDetail";
+import { ProductPageSkeleton } from "@/components/Skeletons/ProductPage";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -63,8 +65,8 @@ export default function ProductPage() {
 
   if (loading) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <h1 className="text-4xl font-bold italic text-gray-600">Cargando...</h1>
+      <div className="w-full h-full">
+        <ProductPageSkeleton/>
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { useUser } from "@/context/UserContext";
 
 interface DiscountModalProps {
   isOpen: boolean;
@@ -13,13 +14,19 @@ const DiscountModal = ({ isOpen, onClose, onApply,discountPercentage }: Discount
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!/^\d*$/.test(e.target.value)) {
+      return;
+    }
+    if(e.target.value === ""){
+        setNewPercentage(0);
+        setErrorMessage("");
+        return;
+    }
     const value = parseInt(e.target.value);
     if (!isNaN(value) && value >= 0 && value <= 100) {
       setNewPercentage(value);
       setErrorMessage("");
-    } else {
-      setErrorMessage("Por favor, ingrese un valor entre 0 y 100.");
-    }
+    } 
   };
 
   const handleSubmit = () => {
@@ -36,9 +43,6 @@ const DiscountModal = ({ isOpen, onClose, onApply,discountPercentage }: Discount
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4">Modificar Descuento</h2>
         <input
-          type="number"
-          min="0"
-          max="100"
           value={newPercentage}
           onChange={handleInputChange}
           className="w-full border p-2 mb-4"
@@ -68,7 +72,7 @@ const DiscountModal = ({ isOpen, onClose, onApply,discountPercentage }: Discount
 interface DiscountButtonProps {
     originalPrice: number;
     discountPercentage: number;
-    onApply: (newPrice: number) => void;
+    onApply: (newPorcentage: number) => void;
   }
 
 
@@ -86,22 +90,24 @@ interface DiscountButtonProps {
     const closeModal = () => {
       setIsModalOpen(false);
     };
+    const { user } = useUser();
   
     return (
       <>
         <div className="flex gap-2 items-center bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
           <span>{discountPercentage}% OFF</span>
-          <PencilSquareIcon
+          {user?.role === "admin" && (
+            <PencilSquareIcon
             className="h-5 w-5 hover:cursor-pointer"
             onClick={openModal}
           />
+          )}
         </div>
         <DiscountModal
           isOpen={isModalOpen}
           discountPercentage={discountPercentage}
           onClose={closeModal}
           onApply={(newPercentage) => {
-            const newPrice = originalPrice * (1 - newPercentage / 100);
             onApply(newPercentage);
           }}
         />

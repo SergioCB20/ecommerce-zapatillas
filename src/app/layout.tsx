@@ -15,6 +15,9 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Deinsa Sneakers",
   description: "Ecommerce de Zapatillas",
+  icons: {
+    icon: "/Sneakers-Logo.png", 
+  },
 };
 
 export default function RootLayout({

@@ -12,27 +12,23 @@ import { db } from "@/lib/firebase";
 import { Product } from "@/types/types";
 import { deleteImage } from "./storageService";
 
-export const createProduct = async (product: Omit<Product, "id">) => {
+export const createProduct = async (product: Product) => {
   try {
     const productsCollection = collection(db, "products");
 
-    // Obtener la cantidad de productos actuales
-    const querySnapshot = await getDocs(productsCollection);
-    const newProductId = (querySnapshot.size + 1).toString(); // Convertir a string
+    // Eliminar explícitamente la propiedad "id" antes de enviarlo a Firestore
+    const { id, ...productWithoutId } = product;
 
-    // Crear referencia con el nuevo ID
-    const productDocRef = doc(productsCollection, newProductId);
-
-    // Guardar el producto con el ID asignado
-    const productWithId = { ...product, id: newProductId };
-    await setDoc(productDocRef, productWithId);
-
-    return newProductId;
+    // Firestore generará un ID automáticamente
+    const docRef = await addDoc(productsCollection, productWithoutId);
+    return docRef.id; 
   } catch (error) {
     console.error("Error al crear el producto:", error);
     throw new Error("No se pudo crear el producto.");
   }
 };
+
+
 
 export const getAllProducts = async (): Promise<Product[]> => {
   try {
@@ -93,7 +89,7 @@ export const updateProduct = async (
 
     if (docSnapshot.exists()) {
       const currentImageUrl = docSnapshot.get("imageUrl");
-      if (currentImageUrl && currentImageUrl !== updatedData.imageUrl) {
+      if (currentImageUrl && updatedData.imageUrl && currentImageUrl !== updatedData.imageUrl) {
         await deleteImage(currentImageUrl);
       }
       await updateDoc(productDocRef, updatedData);

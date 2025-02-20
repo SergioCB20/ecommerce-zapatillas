@@ -1,8 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getAllProducts, deleteProduct } from "@/lib/productsService";
+import { db } from "@/lib/firebase";
+import { collection, onSnapshot } from "firebase/firestore";
+import { deleteProduct } from "@/lib/productsService";
 import { Product } from "@/types/types";
 import ProductForm from "./ProductForm";
+import ProductCardSkeleton from "./Skeletons/ProductCard";
 
 const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -10,20 +13,23 @@ const ProductList = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const fetchedProducts = await getAllProducts();
-      console.log(fetchedProducts);
-      setProducts(fetchedProducts);
-    };
-    fetchProducts();
+    const productsCollection = collection(db, "products");
+
+    const unsubscribe = onSnapshot(productsCollection, (snapshot) => {
+      const productList = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      })) as Product[];
+      console.log("Productos actualizados:", productList);
+      setProducts(productList);
+    });
+    return () => unsubscribe(); 
   }, []);
 
   const handleDelete = async (productId: string) => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
       try {
-        console.log(productId);
         await deleteProduct(productId);
-        setProducts(products.filter((p) => p.id !== productId));
       } catch (error) {
         console.error("Error al eliminar el producto:", error);
         alert("Ocurrió un error al eliminar el producto.");
@@ -45,7 +51,10 @@ const ProductList = () => {
           Crear Producto
         </button>
       </div>
-      <table className="w-full md:w-[60%] border-collapse">
+      {products.length === 0 ? (
+        <ProductCardSkeleton />
+      ):(
+        <table className="w-full md:w-[60%] border-collapse">
         <thead>
           <tr className="bg-gray-200">
             <th className="p-2">Nombre</th>
@@ -83,6 +92,7 @@ const ProductList = () => {
           ))}
         </tbody>
       </table>
+      )}
       {showForm && (
         <ProductForm
           product={selectedProduct || undefined}
@@ -94,3 +104,4 @@ const ProductList = () => {
 };
 
 export default ProductList;
+
