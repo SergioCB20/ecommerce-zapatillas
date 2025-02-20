@@ -29,10 +29,21 @@ interface FiltersState {
     | "discount-desc";
 }
 
-interface FiltersAction {
-  type: string;
-  payload?: any;
+interface SetFilterAction {
+  type: "SET_FILTER";
+  payload: { key: string; value: string | number | boolean | [number, number] };
 }
+
+interface SetSortAction {
+  type: "SET_SORT";
+  payload: FiltersState["sortOption"];
+}
+
+interface ResetAction {
+  type: "RESET";
+}
+
+type FiltersAction = SetFilterAction | SetSortAction | ResetAction;
 
 const filtersReducer = (
   state: FiltersState,
@@ -49,6 +60,7 @@ const filtersReducer = (
       return state;
   }
 };
+
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
