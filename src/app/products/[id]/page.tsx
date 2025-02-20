@@ -8,7 +8,7 @@ import { DiscountButton } from "@/components/DiscountButton";
 import { ProductPageSkeleton } from "@/components/Skeletons/ProductPage";
 
 export default function ProductPage() {
-  const { id } = useParams();
+  const { id } = useParams() as Record<string, string | string[]>;
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -37,54 +37,51 @@ export default function ProductPage() {
 
   const handleAddToCart = () => {
     if (!product) return;
+
     const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
-    const existingCartItemIndex = cart.findIndex((item) => item.id === product.id);
-    
-    if (existingCartItemIndex !== -1) {
-      const existingCartItem = cart[existingCartItemIndex];
+    const existingCartItem = cart.find((item) => item.id === product.id);
+
+    if (existingCartItem) {
       const newTotalQuantity = existingCartItem.quantity + quantity;
       if (newTotalQuantity > product.stock) {
         setMessage(<span className="text-red-600 font-medium">No se puede agregar más. Stock insuficiente.</span>);
-        setTimeout(() => setMessage(""), 3000);
+        setTimeout(() => setMessage(null), 3000);
         return;
       }
-      cart[existingCartItemIndex].quantity = newTotalQuantity;
+      existingCartItem.quantity = newTotalQuantity;
     } else {
       if (quantity > product.stock) {
         setMessage(<span className="text-red-600 font-medium">No se puede agregar más. Stock insuficiente.</span>);
-        setTimeout(() => setMessage(""), 3000);
+        setTimeout(() => setMessage(null), 3000);
         return;
       }
       cart.push({ ...product, quantity });
     }
+
     localStorage.setItem("cart", JSON.stringify(cart));
     setMessage(<span className="text-green-600 font-medium">¡{quantity} {product.name} ha sido añadido al carrito!</span>);
-    setTimeout(() => setMessage(""), 3000);
+    setTimeout(() => setMessage(null), 3000);
   };
 
-  if (loading) {
-    return (
-      <div className="w-full h-full">
-        <ProductPageSkeleton/>
-      </div>
-    );
-  }
+  if (loading) return <ProductPageSkeleton />;
 
   return (
     <div className="w-full min-h-screen flex items-center pt-6">
       {product ? (
         <div className="w-full max-w-7xl mx-auto flex gap-8 p-6 bg-white rounded-lg shadow-md">
-          <div className="w-[50%] h-full flex justify-center items-center">
+          <div className="w-[50%] flex justify-center items-center">
             <Image src={product.imageUrl} alt={product.name} width={400} height={600} className="w-full h-auto object-contain rounded-lg border border-gray-200" />
           </div>
-          <div className="w-[50%] h-full pt-5 px-3">
+          <div className="w-[50%] pt-5 px-3">
             <h1 className="text-3xl font-bold text-gray-800">{product.name}</h1>
             <div className="flex items-center gap-2 mt-4">
               {product.hasDiscount && product.discountPorcentage ? (
                 <div className="flex gap-2">
                   <h2 className="line-through text-gray-500">${product.price.toFixed(2)}</h2>
-                  <h2 className="text-xl text-red-600 font-semibold">${(product.price - product.price * (product.discountPorcentage / 100)).toFixed(2)}</h2>
-                  <DiscountButton discountPercentage={product.discountPorcentage ?? 0} onApply={(newPrice) => console.log(`Nuevo precio aplicado: $${newPrice}`)} />
+                  <h2 className="text-xl text-red-600 font-semibold">
+                    ${(product.price * (1 - product.discountPorcentage / 100)).toFixed(2)}
+                  </h2>
+                  <DiscountButton discountPercentage={product.discountPorcentage} onApply={(newPrice) => console.log(`Nuevo precio aplicado: $${newPrice}`)} />
                 </div>
               ) : (
                 <h2 className="text-xl font-semibold">${product.price.toFixed(2)}</h2>
