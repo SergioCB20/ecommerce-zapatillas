@@ -5,7 +5,6 @@ import { Product, CartItem } from "@/types/types";
 import { useParams } from "next/navigation";
 import { useState, useEffect, ReactNode } from "react";
 import { DiscountButton } from "@/components/DiscountButton";
-import ProductDetail from "@/components/ProductDetail";
 import { ProductPageSkeleton } from "@/components/Skeletons/ProductPage";
 
 export default function ProductPage() {
@@ -85,7 +84,7 @@ export default function ProductPage() {
                 <div className="flex gap-2">
                   <h2 className="line-through text-gray-500">${product.price.toFixed(2)}</h2>
                   <h2 className="text-xl text-red-600 font-semibold">${(product.price - product.price * (product.discountPorcentage / 100)).toFixed(2)}</h2>
-                  <DiscountButton originalPrice={product.price} discountPercentage={product.discountPorcentage ?? 0} onApply={(newPrice) => console.log(`Nuevo precio aplicado: $${newPrice}`)} />
+                  <DiscountButton discountPercentage={product.discountPorcentage ?? 0} onApply={(newPrice) => console.log(`Nuevo precio aplicado: $${newPrice}`)} />
                 </div>
               ) : (
                 <h2 className="text-xl font-semibold">${product.price.toFixed(2)}</h2>

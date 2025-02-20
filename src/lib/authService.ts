@@ -3,7 +3,8 @@ import {
   createUserWithEmailAndPassword, 
   updateProfile, 
   signOut, 
-  User 
+  User, 
+  UserCredential 
 } from "firebase/auth";
 import { auth, db } from "./firebase"; 
 import { doc, setDoc, getDoc } from "firebase/firestore";
@@ -18,14 +19,18 @@ export const registerUser = async (
 ): Promise<User> => {
   try {
     // Crea el usuario en Firebase Authentication
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user: User = userCredential.user;
 
     if (!user) throw new Error("No se pudo registrar el usuario.");
 
     // Actualiza el displayName del usuario
-    await updateProfile(user, { displayName: username }).catch((err) => {
-      console.warn("No se pudo actualizar el nombre de usuario:", err.message);
+    await updateProfile(user, { displayName: username }).catch((err: unknown) => {
+      if (err instanceof Error) {
+        console.warn("No se pudo actualizar el nombre de usuario:", err.message);
+      } else {
+        console.warn("No se pudo actualizar el nombre de usuario debido a un error desconocido.");
+      }
     });
 
     // Guarda el usuario en Firestore con el rol "customer"
@@ -38,9 +43,13 @@ export const registerUser = async (
 
     console.log("Usuario registrado y guardado en Firestore:", user);
     return user;
-  } catch (error: any) {
-    console.error("Error al registrar:", error.message);
-    throw new Error(error.message || "Error al registrar el usuario.");
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error al registrar:", error.message);
+      throw new Error(error.message);
+    } else {
+      throw new Error("Error desconocido al registrar el usuario.");
+    }
   }
 };
 
@@ -49,8 +58,8 @@ export const registerUser = async (
  */
 export const loginUser = async (email: string, password: string) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user: User = userCredential.user;
 
     if (!user) throw new Error("No se pudo iniciar sesión.");
 
@@ -60,21 +69,29 @@ export const loginUser = async (email: string, password: string) => {
 
     console.log("Inicio de sesión exitoso:", { ...user, ...userData });
     return { ...user, ...userData }; // Retorna los datos combinados de Auth y Firestore
-  } catch (error: any) {
-    console.error("Error al iniciar sesión:", error.message);
-    throw new Error(error.message || "Error al iniciar sesión.");
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error al iniciar sesión:", error.message);
+      throw new Error(error.message);
+    } else {
+      throw new Error("Error desconocido al iniciar sesión.");
+    }
   }
 };
 
 /**
  * Cierra sesión del usuario actual.
  */
-export const logout = async () => {
+export const logout = async (): Promise<void> => {
   try {
     await signOut(auth);
     console.log("Cierre de sesión exitoso");
-  } catch (error: any) {
-    console.error("Error al cerrar sesión:", error.message);
-    throw new Error(error.message || "Error al cerrar sesión.");
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error al cerrar sesión:", error.message);
+      throw new Error(error.message);
+    } else {
+      throw new Error("Error desconocido al cerrar sesión.");
+    }
   }
 };

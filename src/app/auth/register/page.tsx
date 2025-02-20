@@ -34,8 +34,12 @@ export default function RegisterPage() {
       setSuccess(true);
       setError("");
       router.push("/");
-    } catch (error: any) {
-      setError(error.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Error al iniciar sesión.");
+      }
     }
   };
 

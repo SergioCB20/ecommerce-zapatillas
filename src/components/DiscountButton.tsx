@@ -70,14 +70,12 @@ const DiscountModal = ({ isOpen, onClose, onApply,discountPercentage }: Discount
 };
 
 interface DiscountButtonProps {
-    originalPrice: number;
     discountPercentage: number;
     onApply: (newPorcentage: number) => void;
   }
 
 
   export const DiscountButton = ({
-    originalPrice,
     discountPercentage,
     onApply,
   }: DiscountButtonProps) => {

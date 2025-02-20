@@ -21,8 +21,12 @@ export default function LoginPage() {
       await loginUser(email, password); // Usa la función login del contexto
       console.log("Usuario después del login:", user);
       router.push("/dashboard"); // Redirigir después del login exitoso
-    } catch (err: any) {
-      setError(err.message || "Error al iniciar sesión.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message); // Si es un error de tipo Error, usa su mensaje
+      } else {
+        setError("Error al iniciar sesión.");
+      }
     }
   };
 
@@ -124,8 +128,12 @@ export default function LoginPage() {
               cursor: "pointer",
               transition: "background-color 0.3s ease",
             }}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#0056b3")}
-            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#007bff")}
+            onMouseOver={(e) =>
+              (e.currentTarget.style.backgroundColor = "#0056b3")
+            }
+            onMouseOut={(e) =>
+              (e.currentTarget.style.backgroundColor = "#007bff")
+            }
           >
             Iniciar sesión
           </button>

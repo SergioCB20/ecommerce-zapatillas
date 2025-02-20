@@ -1,6 +1,7 @@
 "use client";
 import { CartItem } from "@/types/types";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { updateProduct } from "@/lib/productsService"; // Importar la función para actualizar productos
 
 export default function CartPage() {
@@ -92,7 +93,7 @@ export default function CartPage() {
               className="flex justify-between items-center border p-3 mb-3"
             >
               <div className="w-1/4">
-                <img src={product.imageUrl} alt={product.name} className="w-full" />
+                <Image src={product.imageUrl} alt={product.name} className="w-full" />
               </div>
               <div className="w-1/2">
                 <h2 className="text-xl font-bold">{product.name}</h2>

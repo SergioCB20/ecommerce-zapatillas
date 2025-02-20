@@ -69,7 +69,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
           {product.hasDiscount && (
             <DiscountButton
-              originalPrice={product.price}
               discountPercentage={discountPercentage}
               onApply={handleApplyDiscount}
             />

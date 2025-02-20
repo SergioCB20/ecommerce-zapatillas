@@ -21,7 +21,7 @@ export default function LogoutPage() {
 
     // Ejecuta la función de cierre de sesión cuando se carga la página
     handleLogout();
-  }, [logout, router]);
+  }, [router]);
 
   return (
     <div className="flex justify-center items-center h-screen">

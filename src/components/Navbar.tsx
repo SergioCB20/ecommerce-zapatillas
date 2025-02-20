@@ -23,7 +23,12 @@ export default function Navbar() {
     }
   };
 
-  let dropdownOptions:any = [];
+  interface DropdownOption {
+    label: string;
+    href: string;
+  }
+  
+  let dropdownOptions: DropdownOption[] = [];
 
   if (!user) {
     dropdownOptions = [
