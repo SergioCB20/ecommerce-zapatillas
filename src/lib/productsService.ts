@@ -15,7 +15,7 @@ export const createProduct = async (product: Product) => {
   try {
     const productsCollection = collection(db, "products");
 
-    // Eliminar explícitamente la propiedad "id" antes de enviarlo a Firestore
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id: _, ...productWithoutId } = product;
 
     // Firestore generará un ID automáticamente
